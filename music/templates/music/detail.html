@@ -1,39 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<img src="{{ album.logo }}" width="300px" height="300px">
+{% extends 'music/base.html' %}
+{% block title %}{{ album.title }} - Details{% endblock %}
 
-<h1>{{ album.title }}</h1>
-<h2>{{ album.artist }}</h2>
+{% block body %}
+    <img src="{{ album.logo }}" width="300px" height="300px">
 
-{% if error_message %}
-    <p><strong>{{ error_message }}</strong></p>
-{% endif %}
+    <h1>{{ album.title }}</h1>
+    <h2>{{ album.artist }}</h2>
 
-<form action="{% url 'music:favorite' album.id %}" method="post">
-    {% csrf_token %}
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+
     {% for song in album.song_set.all %}
-        <input type="radio" id="{{ song.id }}" name="song" value="{{ song.id }}"/>
-        <label for="{{ song.id }}">
-            {{ song.title }}
-            {% if song.is_favorite %}
-                <img src="http://i.imgur.com/b9b13Rd.png">
-            {% endif %}
-        </label><br>
-    {% endfor %}
-
-    <input type="submit" value="Favorite">
-
-</form>
-{% comment %}<ul>
-    {% for song in album.song_set.all %}
-    <li>{{ song.title }}</li>
-    {% endfor %}
-</ul>{% endcomment %}
-
-</body>
-</html>
+            <label for="{{ song.id }}">
+                {{ song.title }}
+            </label><br>
+        {% endfor %}
+{% endblock %}
